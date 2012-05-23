@@ -113,3 +113,14 @@ can be considered serious.
   function MagickGetImageFormat, file wand/magick-image.c, line 4137.
 
 
+BUILDING
+========
+
+Standard build commands should work. If checking out from the git repo,
+you should just be able to call the following:
+
+    ./autorun.sh
+    ./confgure
+    make
+    sudo make install
+

@@ -22,6 +22,7 @@ AC_ARG_WITH(imagemagick, [  --with-imagemagick        Specify installation direc
     CFLAGS+=" -I$imagemagick_dir/include/ImageMagick"
 ],[
     CFLAGS+=" -I/usr/local/include/ImageMagick"
+    CFLAGS+=" -I/usr/include/ImageMagick"
     CFLAGS+=" -I/opt/local/include/ImageMagick"
 ])
 AC_SUBST(imagemagick_dir)

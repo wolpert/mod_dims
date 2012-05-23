@@ -63,7 +63,7 @@ AC_ARG_WITH(apache, [  --with-apache        Specify installation directory for A
 
     AC_CHECK_HEADER(apr.h,, [AC_MSG_ERROR(Apache Portable Runtime headers not found.)])
     AC_CHECK_HEADER(httpd.h,, [AC_MSG_ERROR(Apache headers not found.)])
-    AC_PATH_PROG([APXS], apxs)
+    AC_PATH_PROG([APXS], apxs2 apxs)
 ])
 
 

@@ -1028,9 +1028,9 @@ dims_handle_request(dims_request_rec *d)
 
     d->client_id = ap_getword(d->pool, (const char **) &d->unparsed_commands, '/');
 
-    if(!(d->client_config = 
-            apr_hash_get(d->config->clients, d->client_id, APR_HASH_KEY_STRING))) {
-        return dims_cleanup(d, "Application ID is not valid", DIMS_BAD_CLIENT);
+    if(!(d->client_config =  apr_hash_get(d->config->clients, d->client_id, APR_HASH_KEY_STRING))) {
+      //return dims_cleanup(d, "Application ID is not valid", DIMS_BAD_CLIENT);
+      ap_log_rerror( APLOG_MARK, APLOG_ERR,0, d->r, "Application ID bad %s",d->client_config);
     }
 
     if(d->client_config && d->client_config->no_image_url) {

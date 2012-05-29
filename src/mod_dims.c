@@ -1465,6 +1465,7 @@ dims_init(apr_pool_t *p, apr_pool_t *plog, apr_pool_t* ptemp, server_rec *s)
     apr_hash_set(ops, "thumbnail", APR_HASH_KEY_STRING, dims_thumbnail_operation);
     apr_hash_set(ops, "legacy_thumbnail", APR_HASH_KEY_STRING, dims_legacy_thumbnail_operation);
     apr_hash_set(ops, "legacy_crop", APR_HASH_KEY_STRING, dims_legacy_crop_operation);
+    apr_hash_set(ops, "background", APR_HASH_KEY_STRING, dims_background_operation);
     apr_hash_set(ops, "quality", APR_HASH_KEY_STRING, dims_quality_operation);
     apr_hash_set(ops, "sharpen", APR_HASH_KEY_STRING, dims_sharpen_operation);
     apr_hash_set(ops, "blur", APR_HASH_KEY_STRING, dims_blur_operation);

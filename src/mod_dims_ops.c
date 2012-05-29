@@ -178,6 +178,21 @@ dims_extent_operation (dims_request_rec *d, char *args, char **err) {
 }
 
 apr_status_t
+dims_background_operation (dims_request_rec *d, char *args, char **err) {
+
+    PixelWand *p_wand;
+
+    p_wand = NewPixelWand();
+    PixelSetColor(p_wand, args);
+
+    MAGICK_CHECK(MagickSetImageBackgroundColor(d->wand,p_wand), d);
+    
+    p_wand = DestroyPixelWand(p_wand);
+
+    return DIMS_SUCCESS;
+}
+
+apr_status_t
 dims_sharpen_operation (dims_request_rec *d, char *args, char **err) {
     MagickStatusType flags;
     GeometryInfo geometry;

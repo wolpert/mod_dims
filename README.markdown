@@ -30,6 +30,10 @@ Add the following to the Apache configuration:
 
 This assumes mod_dims.so has been installed in $HTTP_ROOT/modules.
 
+To add a generic client handler, with the 12AB application id, example line for the conf file:
+
+    DimsAddClient 12AB - - - trust - - -
+
 Errors
 ======
 

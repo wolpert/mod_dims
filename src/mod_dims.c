@@ -270,7 +270,6 @@ dims_config_set_client(cmd_parms *cmd, void *d, int argc, char *const argv[])
     }
 
     apr_hash_set(config->clients, argv[0], APR_HASH_KEY_STRING, client_config);
-
     return NULL;
 }
 
@@ -1029,8 +1028,8 @@ dims_handle_request(dims_request_rec *d)
     d->client_id = ap_getword(d->pool, (const char **) &d->unparsed_commands, '/');
 
     if(!(d->client_config =  apr_hash_get(d->config->clients, d->client_id, APR_HASH_KEY_STRING))) {
-      //return dims_cleanup(d, "Application ID is not valid", DIMS_BAD_CLIENT);
-      ap_log_rerror( APLOG_MARK, APLOG_ERR,0, d->r, "Application ID bad %s",d->client_config);
+      ap_log_rerror( APLOG_MARK, APLOG_ERR,0, d->r, "Application ID (No DimsAddClient set) bad %s",d->client_id);
+      return dims_cleanup(d, "Application ID is not valid", DIMS_BAD_CLIENT);
     }
 
     if(d->client_config && d->client_config->no_image_url) {

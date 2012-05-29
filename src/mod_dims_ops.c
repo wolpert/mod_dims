@@ -162,6 +162,22 @@ dims_resize_operation (dims_request_rec *d, char *args, char **err) {
 }
 
 apr_status_t
+dims_extent_operation (dims_request_rec *d, char *args, char **err) {
+    MagickStatusType flags;
+    RectangleInfo rec;
+
+    flags = ParseSizeGeometry(GetImageFromMagickWand(d->wand), args, &rec);
+    if(!(flags & AllValues)) {
+        *err = "Parsing thumbnail geometry failed for extent";
+        return DIMS_FAILURE;
+    }
+
+    MAGICK_CHECK(MagickExtentImage(d->wand, rec.width, rec.height, SincFilter, 0.9), d);
+
+    return DIMS_SUCCESS;
+}
+
+apr_status_t
 dims_sharpen_operation (dims_request_rec *d, char *args, char **err) {
     MagickStatusType flags;
     GeometryInfo geometry;

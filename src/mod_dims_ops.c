@@ -175,7 +175,7 @@ dims_extent_operation (dims_request_rec *d, char *args, char **err) {
         return DIMS_FAILURE;
     }
 
-    ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, d->r, "Extent offset: rec.x=%d rec.y=%d rec.width=%d rec.height=%d",rec.x,rec.y, rec.width, rec.height);
+    ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, d->r, "Extent offset: rec.x=%d rec.y=%d rec.width=%d rec.height=%d",(int)rec.x,(int)rec.y,(int) rec.width,(int)rec.height);
     
     MAGICK_CHECK(MagickExtentImage(d->wand, rec.width, rec.height, rec.x, rec.y ), d);
 

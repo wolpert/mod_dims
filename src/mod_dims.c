@@ -1460,6 +1460,7 @@ dims_init(apr_pool_t *p, apr_pool_t *plog, apr_pool_t* ptemp, server_rec *s)
     apr_hash_set(ops, "liquidresize", APR_HASH_KEY_STRING, dims_liquid_resize_operation);
     apr_hash_set(ops, "resize", APR_HASH_KEY_STRING, dims_resize_operation);
     apr_hash_set(ops, "extent", APR_HASH_KEY_STRING, dims_extent_operation);
+    apr_hash_set(ops, "gravity", APR_HASH_KEY_STRING, dims_gravity_operation);
     apr_hash_set(ops, "adaptiveresize", APR_HASH_KEY_STRING, dims_adaptive_resize_operation);
     apr_hash_set(ops, "crop", APR_HASH_KEY_STRING, dims_crop_operation);
     apr_hash_set(ops, "thumbnail", APR_HASH_KEY_STRING, dims_thumbnail_operation);

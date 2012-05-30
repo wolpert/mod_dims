@@ -150,6 +150,7 @@ dims_resize_operation (dims_request_rec *d, char *args, char **err) {
     MagickStatusType flags;
     RectangleInfo rec;
 
+    MagickSetImageGravity(d->wand, CenterGravity);
     flags = ParseSizeGeometry(GetImageFromMagickWand(d->wand), args, &rec);
     if(!(flags & AllValues)) {
         *err = "Parsing thumbnail geometry failed";
@@ -166,15 +167,30 @@ apr_status_t
 dims_extent_operation (dims_request_rec *d, char *args, char **err) {
     MagickStatusType flags;
     RectangleInfo rec;
+    ExceptionInfo ex_info;
+    int x,y;
 
-    flags = ParseSizeGeometry(GetImageFromMagickWand(d->wand), args, &rec);
+    MagickSetImageGravity(d->wand, CenterGravity);
+    flags = ParseGravityGeometry(GetImageFromMagickWand(d->wand), args, &rec, &ex_info);
     if(!(flags & AllValues)) {
         *err = "Parsing thumbnail geometry failed for extent";
         return DIMS_FAILURE;
     }
 
     //GravityAdjustGeometry(GetImageFromMagickWand(d->wand)->columns, GetImageFromMagickWand(d->wand)->rows,CenterGravity,&rec);
-    MAGICK_CHECK(MagickExtentImage(d->wand, rec.width, rec.height, SincFilter, 0.9), d);
+    ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, d->r, "cols=%d rows=%d",GetImageFromMagickWand(d->wand)->columns,GetImageFromMagickWand(d->wand)->rows);
+    ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, d->r, "width=%d height=%d",rec.width,rec.height);
+    x = GetImageFromMagickWand(d->wand)->columns-rec.width;
+    y = GetImageFromMagickWand(d->wand)->rows-rec.height;
+    if(x!=0){
+      x=x/2;
+    }
+    if(y!=0){
+      y=y/2;
+    }
+    ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, d->r, "x=%d y=%d",x,y);
+
+    MAGICK_CHECK(MagickExtentImage(d->wand, rec.width, rec.height, x, y ), d);
 
     return DIMS_SUCCESS;
 }
@@ -215,6 +231,7 @@ dims_thumbnail_operation (dims_request_rec *d, char *args, char **err) {
     RectangleInfo rec, rec2;
     char *resize_args = apr_psprintf(d->pool, "%s^", args);
 
+    MagickSetImageGravity(d->wand, CenterGravity);
     flags = ParseSizeGeometry(GetImageFromMagickWand(d->wand), resize_args, &rec);
     if(!(flags & AllValues)) {
         *err = "Parsing thumbnail (resize) geometry failed";

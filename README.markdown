@@ -34,6 +34,32 @@ To add a generic client handler, with the 12AB application id, example line for 
 
     DimsAddClient 12AB - - - trust - - -
 
+COMMANDS
+========
+
+The following are commands implemented by this version:
+- strip
+- normalize
+- flip
+- flop
+- mirroredfloor
+- liquidresize
+- resize
+- extent
+- gravity
+- adaptiveresize
+- crop
+- thumbnail
+- legacy_thumbnail
+- legacy_crop
+- background
+- quality
+- sharpen
+- blur
+- format
+
+
+
 Errors
 ======
 

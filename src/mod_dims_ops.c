@@ -156,6 +156,7 @@ dims_resize_operation (dims_request_rec *d, char *args, char **err) {
         return DIMS_FAILURE;
     }
 
+    //GravityAdjustGeometry(GetImageFromMagickWand(d->wand)->columns, GetImageFromMagickWand(d->wand)->rows,CenterGravity,&rec);
     MAGICK_CHECK(MagickResizeImage(d->wand, rec.width, rec.height, SincFilter, 0.9), d);
 
     return DIMS_SUCCESS;
@@ -172,6 +173,7 @@ dims_extent_operation (dims_request_rec *d, char *args, char **err) {
         return DIMS_FAILURE;
     }
 
+    //GravityAdjustGeometry(GetImageFromMagickWand(d->wand)->columns, GetImageFromMagickWand(d->wand)->rows,CenterGravity,&rec);
     MAGICK_CHECK(MagickExtentImage(d->wand, rec.width, rec.height, SincFilter, 0.9), d);
 
     return DIMS_SUCCESS;

@@ -206,13 +206,21 @@ apr_status_t
 dims_background_operation (dims_request_rec *d, char *args, char **err) {
 
     PixelWand *p_wand;
+    apr_status_t code;
 
     p_wand = NewPixelWand();
     PixelSetColor(p_wand, args);
-
-    MAGICK_CHECK(MagickSetImageBackgroundColor(d->wand,p_wand), d);
-    
+    // possible failure here... need to manually check the result so we can destroy the wand
+    //MAGICK_CHECK(MagickSetImageBackgroundColor(d->wand,p_wand), d);
+    code = MagickSetImageBackgroundColor(d->wand,p_wand);
     p_wand = DestroyPixelWand(p_wand);
+
+    if(rec->status == DIMS_IMAGEMAGICK_TIMEOUT) {    
+      return DIMS_IMAGEMAGICK_TIMEOUT;	
+    } else if(code == MagickFalse) {
+      return DIMS_FAILURE;
+    }
+    
 
     return DIMS_SUCCESS;
 }

@@ -1,4 +1,4 @@
-AC_PREREQ(2.60)
+AC_PREREQ(2.59)
 AC_INIT(mod_dims, 3.1.0, [jeremy.collins@corp.aol.com])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/mod_dims.c])

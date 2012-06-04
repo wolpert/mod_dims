@@ -215,7 +215,7 @@ dims_background_operation (dims_request_rec *d, char *args, char **err) {
     code = MagickSetImageBackgroundColor(d->wand,p_wand);
     p_wand = DestroyPixelWand(p_wand);
 
-    if(rec->status == DIMS_IMAGEMAGICK_TIMEOUT) {    
+    if(d->status == DIMS_IMAGEMAGICK_TIMEOUT) {    
       return DIMS_IMAGEMAGICK_TIMEOUT;	
     } else if(code == MagickFalse) {
       return DIMS_FAILURE;

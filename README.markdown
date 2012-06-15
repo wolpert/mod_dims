@@ -34,6 +34,17 @@ To add a generic client handler, with the 12AB application id, example line for 
 
     DimsAddClient 12AB - - - trust - - -
 
+MUTICPU NOTES
+======= =====
+In your /etc/init.d/httpd file on CentOS, before you start up anything, add the following line:
+   export OMP_WAIT_POLICY=passive
+ImageMagick uses libgomp features, and in some cases, the default (active) wait policy can cause 
+thread starvation. Seen in CentOS 5.8 and likely also in 6.2. For references, see 
+http://gcc.gnu.org/onlinedocs/libgomp/OMP_005fWAIT_005fPOLICY.html#OMP_005fWAIT_005fPOLICY and 
+http://comments.gmane.org/gmane.comp.gcc.bugs/277676
+
+
+
 COMMANDS
 ========
 

@@ -34,8 +34,8 @@ To add a generic client handler, with the 12AB application id, example line for 
 
     DimsAddClient 12AB - - - trust - - -
 
-MUTICPU NOTES
-======= =====
+MUTI-CPU NOTES
+==============
 
 In your /etc/init.d/httpd file on CentOS, before you start up anything, add the following line:
 

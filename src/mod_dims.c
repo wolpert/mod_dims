@@ -1270,12 +1270,10 @@ dims_handler(request_rec *r)
         if(bitmap == -1) {
             return dims_cleanup(d, NULL, DIMS_BAD_URL);
         }
+        
+        url = fix_up_url(r);
 
-        /* HACK: If URL has "http:/" instead of "http://", correct it. */
-        url = strstr(r->uri, "http:/");
-        if(url && *(url + 6) != '/') {
-            fixed_url = apr_psprintf(r->pool, "http://%s", url + 6);
-        } else if(!url) {
+        if(!url) {
             return dims_cleanup(d, NULL, DIMS_BAD_URL);
         } else {
             fixed_url = url;
@@ -1360,18 +1358,20 @@ dims_handler(request_rec *r)
          * HACK: If URL has "http:/" instead of "http://", correct it. 
          */
         commands = apr_pstrdup(r->pool, r->uri);
-        if(fixed_url == NULL) {
-            url = strstr(r->uri, "http:/");
-            if(url && *(url + 6) != '/') {
-                fixed_url = apr_psprintf(r->pool, "http://%s", url + 6);
-            } else if(!url) {
-                return dims_cleanup(d, NULL, DIMS_BAD_URL);
-            } else {
-                fixed_url = url;
-            }
+        if(fixed_url == NULL) {  
+	  url = fix_up_url(r);
+
+	  if(!url) {
+            return dims_cleanup(d, NULL, DIMS_BAD_URL);
+	  } else {
+            fixed_url = url;
+	  }
 
             /* Strip URL off URI.  This leaves only the tranformation parameters. */
             p = strstr(commands, "http:/");
+	    if(!p){
+	      p = strstr(commands,"https:/");
+	    }
             if(!p) return dims_cleanup(d, NULL, DIMS_BAD_URL);
             *p = '\0';
         }
@@ -1414,15 +1414,12 @@ dims_handler(request_rec *r)
         ap_rflush(r);
         return OK;
     } else if(strcmp(r->handler, "dims-sizer") == 0) {
-        char *url, *fixed_url;
-        url = strstr(r->uri, "http:/");
-        if(url && *(url + 6) != '/') {
-            fixed_url = apr_psprintf(r->pool, "http://%s", url + 6);
-        } else if(!url) {
-            return dims_cleanup(d, NULL, DIMS_BAD_URL);
-        } else {
-            fixed_url = url;
-        }
+        char  *fixed_url;
+	fixed_url = fix_up_url(r);
+
+	if(!fixed_url) {
+	  return dims_cleanup(d, NULL, DIMS_BAD_URL);
+        } 
         d->image_url = fixed_url;
         d->unparsed_commands = NULL;
 
@@ -1431,6 +1428,29 @@ dims_handler(request_rec *r)
     }
 
     return DECLINED;
+}
+/* HACK: If URL has "http:/" instead of "http://", correct it. (Updated for https)*/
+static char * 
+fix_up_url(request_rec *r)
+{
+  char *url, *fixed_url, *httpsurl;
+  url = strstr(r->uri, "http:/");
+  if(url){
+    if(*(url + 6) != '/') {
+      return apr_psprintf(r->pool, "http://%s", url + 6);
+    } else {
+      return url;
+    }
+  } 
+  httpsurl = strstr(r->uri, "https:/");
+  if (httpsurl){
+    if(*(httpsurl + 7) != '/') {
+      return apr_psprintf(r->pool, "https://%s", httpsurl + 7);
+    } else {
+      return httpsurl;
+    }
+  }
+  return (char *)0;
 }
 
 static int 

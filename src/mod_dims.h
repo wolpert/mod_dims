@@ -57,6 +57,7 @@ typedef struct dims_client_config_rec dims_client_config_rec;
 
 typedef apr_status_t(dims_operation_func) (dims_request_rec *, char *args, char **err);
 void smartCrop(MagickWand *wand, int resolution, unsigned long cropWidth, unsigned long cropHeight);
+static char *fix_up_url(request_rec *r);
 
 dims_operation_func 
     dims_strip_operation,
